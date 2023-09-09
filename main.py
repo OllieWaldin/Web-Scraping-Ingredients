@@ -3,6 +3,14 @@ import requests
 url = "https://www.allrecipes.com/gallery/best-easy-cake-recipes-for-beginners/"
 response = requests.get(url)
 
+ingrDict = {}
+ingrFracDict = {"½":0.5,
+                "¾":0.75,
+                "⅔":0.67,
+                "¼":0.25,
+                "¾":0.75,
+                "¾":0.75,}
+
 def getIngrs(soup):
     ingrs = []
     table = soup.find('ul', attrs={"class": "mntl-structured-ingredients__list"})
@@ -14,6 +22,12 @@ def getIngrs(soup):
                 for part in item.find_all("span"):
                     oneIngr.append(part.get_text())
                 ingrs.append(" ".join(oneIngr))
+                ingrName = item.find('span', attrs={"data-ingredient-name":"true"})
+                #ingrAmnt = int(item.find('span', attrs={"data-ingredient-quantity":"true"}))
+                # print(type(int(item.find('span', attrs={"data-ingredient-quantity":"true"}).get_text())))
+                # for i in range(len(ingrDict)):
+                #     if ingrDict.get(ingrName) != None:
+                #         break
         return ingrs
 def getCakeName():
     names = []

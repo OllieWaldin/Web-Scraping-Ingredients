@@ -8,8 +8,10 @@ ingrFracDict = {"½":0.5,
                 "¾":0.75,
                 "⅔":0.67,
                 "¼":0.25,
-                "¾":0.75,
-                "¾":0.75,}
+                "1 ½":1.5,
+                "1 ¾":1.75,
+                "2 ½":2.5}
+
 
 def getIngrs(soup):
     ingrs = []
@@ -23,11 +25,23 @@ def getIngrs(soup):
                     oneIngr.append(part.get_text())
                 ingrs.append(" ".join(oneIngr))
                 ingrName = item.find('span', attrs={"data-ingredient-name":"true"})
-                #ingrAmnt = int(item.find('span', attrs={"data-ingredient-quantity":"true"}))
-                # print(type(int(item.find('span', attrs={"data-ingredient-quantity":"true"}).get_text())))
-                # for i in range(len(ingrDict)):
-                #     if ingrDict.get(ingrName) != None:
-                #         break
+                ingr = item.find('span', attrs={"data-ingredient-quantity":"true"}).get_text()
+                
+                
+                if ingr in ingrFracDict:
+                    ingrAmnt = ingrFracDict[ingr]
+                    print(ingrAmnt)
+                else:
+                    ingrAmnt = int(ingr)
+                
+                #MAKE SURE THIS VVVVVVVV RUNS INSTEAD OF DEFAULTING TO 0
+                for i in range(len(ingrDict)):
+                    if ingrDict.get(ingrName) != None:
+                        print(ingrDict.get(ingrName))
+                    #     ingrDict[ingrName] += ingrAmnt
+                    # else:
+                    #     ingrDict[ingrName] = ingrAmnt   
+                #print(ingrDict)
         return ingrs
 def getCakeName():
     names = []
